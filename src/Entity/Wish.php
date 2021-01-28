@@ -23,7 +23,7 @@ class Wish
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=2000, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 

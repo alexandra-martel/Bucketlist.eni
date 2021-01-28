@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Wish;
-use Doctrine\ORM\EntityManager;
+use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,18 +15,21 @@ Class WishController extends AbstractController
      * @Route("/wish", name="wish_list")
      */
 
-    public function list(): Response
+    public function list(WishRepository $wishRepository)
     {
-        return $this->render('wish/list.html.twig', []);
+        $wishes = $wishRepository->findBy(["isPublished"=>true],["dateCreated"=>"DESC"]);
+        return $this->render("wish/list.html.twig", ["wishes"=> $wishes]);
     }
 
     /**
      * @Route("/wish/detail/{id}", name="wish_detail", requirements={"id":"\d+"})
      */
 
-    public function detail(int $id): Response
+    public function detail(int $id, WishRepository $wishRepository): Response
     {
-        return $this->render('wish/detail.html.twig', ["wish_id" => $id]);
+        $wish = $wishRepository->find($id);
+
+        return $this->render('wish/detail.html.twig', ["wish_id" => $id, "wish" => $wish]);
 
     }
 
@@ -43,7 +46,7 @@ Class WishController extends AbstractController
         $wish->setDescription('En Islande ou en Norvège');
         $wish->setAuthor('Alexandra');
         $wish->setIsPublished('non');
-        $wish->getDateCreated(new \DateTime());
+        $wish->setDateCreated (new \DateTime());
 
         $entityManager->persist($wish);
 
@@ -53,7 +56,7 @@ Class WishController extends AbstractController
         $wish2->setDescription('En pleine campagne');
         $wish2->setAuthor('Alexandra');
         $wish2->setIsPublished('non');
-        $wish2->getDateCreated(new \DateTime());
+        $wish2->setDateCreated(new \DateTime());
 
         $entityManager->persist($wish2);
 
@@ -63,7 +66,7 @@ Class WishController extends AbstractController
         $wish3->setDescription('Savourer chaque instant !');
         $wish3->setAuthor('Alexandra');
         $wish3->setIsPublished('non');
-        $wish3->getDateCreated(new \DateTime());
+        $wish3->setDateCreated(new \DateTime());
 
         $entityManager->persist($wish3);
 
@@ -73,13 +76,12 @@ Class WishController extends AbstractController
         $wish4->setDescription('Explorer, voyager, rencontrer, être libre !!');
         $wish4->setAuthor('Alexandra');
         $wish4->setIsPublished('non');
-        $wish4->getDateCreated(new \DateTime());
+        $wish4->setDateCreated(new \DateTime());
 
         $entityManager->persist($wish4);
         $entityManager->flush();
 
-        return new \http\Env\Response('ok !');
+        return $this->render('main/home.html.twig', []);
     }
-
 
 }

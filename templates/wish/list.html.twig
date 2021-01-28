@@ -5,6 +5,16 @@
 {% endblock %}
 
 {% block body %}
+    <section>
     <h1>Wish list !</h1>
+
+        {% for wish in wishes %}
+            <article>
+                <a href="{{ path('wish_detail', {id:wish.id})}}" title="Voir les details !">{{ wish.title }}</a>
+            </article>
+            {% else %}
+            <div>There are no wishes !</div>
+        {% endfor %}
+    </section>
 
 {% endblock %}
