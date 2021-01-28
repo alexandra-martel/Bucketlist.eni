@@ -4,3 +4,9 @@ body
     background-color: antiquewhite;
     font-family: 'poppins', serif;
 }
+
+label
+{
+    display: block;
+    margin-top: 10px;
+}

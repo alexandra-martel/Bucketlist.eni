@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Wish;
+use App\Form\WishFormType;
 use App\Repository\WishRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -72,6 +74,8 @@ Class WishController extends AbstractController
 
         $wish4 = new Wish();
 
+
+
         $wish4->setTitle('Faire le tour du monde en camping car');
         $wish4->setDescription('Explorer, voyager, rencontrer, être libre !!');
         $wish4->setAuthor('Alexandra');
@@ -82,6 +86,30 @@ Class WishController extends AbstractController
         $entityManager->flush();
 
         return $this->render('main/home.html.twig', []);
+    }
+
+    /**
+     * @Route("/wish/new", name="wish_new")
+     */
+
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $wishForm = $this->createForm(WishFormType::class);
+        $wish = new Wish();
+        $wishForm = $this->createForm(WishFormType::class, $wishForm);
+        $wishForm->handleRequest($request);
+        if($wishForm->isSubmitted() && $wishForm->isValid()){
+
+            $entityManager->persist($wish);
+            $entityManager->flush();
+
+        $this ->addFlash('succès','Le message a bien été crée');
+        return $this->redirectToRoute('wish_detail', ['id'=> $wish->getId()]);
+
+        }
+        return $this->render('wish/new.html.twig',
+            ["wishForm" => $wishForm->createView()]);
+
     }
 
 }
