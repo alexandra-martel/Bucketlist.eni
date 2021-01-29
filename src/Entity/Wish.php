@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\WishRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=WishRepository::class)
@@ -18,6 +19,8 @@ class Wish
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Le champs est requis")
+     * @Assert\Length(min=2, max=250, minMessage="Le texte doit être plus long !", maxMessage="Le texte doit être plus court !")
      * @ORM\Column(type="string", length=250)
      */
     private $title;
@@ -41,6 +44,12 @@ class Wish
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="wishes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -103,6 +112,18 @@ class Wish
     public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
         $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

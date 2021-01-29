@@ -1,12 +1,81 @@
-
-body
-{
-    background-color: antiquewhite;
-    font-family: 'poppins', serif;
+html, body {
+    height: 100%;
+    margin: 10px;
+    padding: 0;
 }
 
-label
-{
+body {
+    background-color: antiquewhite;
+    font-family: 'poppins', serif;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+a:hover {
+    color: darkgreen;
+}
+
+header, a {
+    padding: 10px 0;
+    color: #B0413E;
+}
+
+header nav {
+    display: flex;
+}
+
+a:link {
+    font-size: 25px;
+}
+
+header nav a {
+    padding: 15px;
+    color: #B0413E;
+}
+
+footer {
+    color: darkgreen;
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: darkgreen;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+
+label {
     display: block;
     margin-top: 10px;
 }
+
+.alert {
+    padding: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 5px;
+    background-color: red;
+    color: #FFF;
+}
+
+.alert-success {
+    background-color: green;
+}
+
+#wish_form_submit {
+    margin: 20px 0;
+}
+
+#wish_form_dateCreated {
+    display: inline-flex;
+}
+
+
+
+

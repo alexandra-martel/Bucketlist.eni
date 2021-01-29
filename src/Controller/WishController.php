@@ -94,16 +94,19 @@ Class WishController extends AbstractController
 
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $wishForm = $this->createForm(WishFormType::class);
         $wish = new Wish();
-        $wishForm = $this->createForm(WishFormType::class, $wishForm);
+
+        $wish->setDateCreated(new \DateTime());
+        $wish->setIsPublished(true);
+
+        $wishForm = $this->createForm(WishFormType::class, $wish);
         $wishForm->handleRequest($request);
         if($wishForm->isSubmitted() && $wishForm->isValid()){
 
             $entityManager->persist($wish);
             $entityManager->flush();
 
-        $this ->addFlash('succès','Le message a bien été crée');
+        $this ->addFlash('succès','Le wish a bien été crée');
         return $this->redirectToRoute('wish_detail', ['id'=> $wish->getId()]);
 
         }
