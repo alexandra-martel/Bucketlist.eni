@@ -25,4 +25,13 @@ Class MainController extends AbstractController
     {
         return $this->render('main/about_us.html.twig', []);
     }
+
+    /**
+     * @Route("/register", name="registration_register", methods={"GET", "POST"})
+     */
+
+    public function register(): Response
+    {
+        return $this->render('registration/register.html.twig', []);
+    }
 }

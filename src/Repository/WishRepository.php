@@ -19,6 +19,39 @@ class WishRepository extends ServiceEntityRepository
         parent::__construct($registry, Wish::class);
     }
 
+    public function findCategorizedWishes($categoryId = null): array
+    {
+        $queryBuilder = $this->createQueryBuilder('w');
+
+        $queryBuilder->addOrderBy('w.dateCreated', 'DESC');
+
+        $queryBuilder
+            ->andWhere('w.isPublished = :publishStatus')
+            ->setParameter('publishStatus', 1)
+
+            ->join('w.category', 'c')
+            ->addSelect('c');
+
+
+        if($categoryId){
+        }
+
+        //récupère notre objet query, sur lequel on pourra récupérer nos résultats
+        $query = $queryBuilder->getQuery();
+
+        //limit
+        $query->setMaxResults(200);
+
+        //offset
+        $query->setFirstResult(0);
+
+        //récupère tous les résultats
+        $wishes = $query->getResult();
+        return $wishes;
+    }
+
+
+
     // /**
     //  * @return Wish[] Returns an array of Wish objects
     //  */
